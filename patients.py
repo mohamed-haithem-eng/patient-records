@@ -16,12 +16,11 @@ def list_patients():
         print(f"    diagnosis: {patient['diagnosis']}")
         print("=" * 40)
 
+def find(name):
+    return [patient for patient in  patients if patient["name"].lower() == name.lower()]
+    
 def search_patient(name):
-    same_patient = []
-
-    for patient in patients:
-        if patient["name"].lower() == name.lower():
-            same_patient.append(patient)
+    same_patient = find(name)
 
     if not same_patient:
         print("\n| I couldn't find it |\n")
@@ -34,15 +33,12 @@ def search_patient(name):
     print("=" * 30)
 
 def delete_patient(name):
-    deleted = False
-
-    for patient in patients[:]:
-        if patient["name"].lower() == name.lower():
-            patients.remove(patient)
-            deleted = True
-
-    if deleted:
-        print(f"Deleted patient: {name}")
-
-    else:
+    matches = find(name)
+    
+    if not matches :
         print("\n|I couldn't find it|\n")
+
+    for patient in matches:
+        patients.remove(patient)
+        
+    print(f"Deleted patient: {name}")
