@@ -1,16 +1,36 @@
 from patients import add_patient,list_patients,search_patient,delete_patient
 
+def check_name():
+    while True:
+        name = input("Enter Name : ").lower().strip()
+        if not name:
+            print("Plz Enter Name")
+        else:
+            return name
+        
 def add():
-    name = input("Enter Name: ").lower()
-    age  = int(input("Enter Age"))
-    diagnosis  = input("Enter Diagnosis").lower()
+    name = check_name()
+    while True:
+        try:
+            age  = int(input("Enter Age: "))
+            if 0 < age < 120:
+                break
+            else:
+                print("\n| Invalid age! Must be integer between 1 and 120 |\n")
+                
+        except ValueError:
+            print("plz Enter int only")
+            
+    diagnosis  = input("Enter Diagnosis: ").lower()
     add_patient(name,age,diagnosis)
-
+        
 def search():
-    search_patient(input("Name to Search: "))
-
+    name = check_name()
+    search_patient(name)
+        
 def delete():
-    delete_patient(input("Name to Delete: "))
+    name = check_name()
+    delete_patient(name)
     
 options = {
     "1": ("Add",add),
@@ -24,12 +44,15 @@ while True:
         print(key,name)
     print("5 Exit")
     
-    choice = input("Enter Num: ")
+    choice = input("Enter Num: ").strip()
     
-    if choice == 5:
-        print("Bye")
-        break
-    elif choice in options:
-        options[choice][1]()
+    if not choice in options and choice != "5":
+        print("Plz Enter 1 to 5 only") 
+    
     else:
-        print("Invalid choice")
+        if choice == "5":
+            print("Bye")
+            break
+        
+        elif choice in options:
+            options[choice][1]() # ex: options[3][delete],() mean run func 
