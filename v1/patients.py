@@ -1,8 +1,8 @@
 patients = []
 
 def add_patient(name, age, diagnosis):
-        patient = {"name": name, "age": age, "diagnosis": diagnosis}
-        patients.append(patient)
+    patient = {"name": name, "age": age, "diagnosis": diagnosis}
+    patients.append(patient)
     
 def list_patients():
     print("\n", "=" * 20, " patients list:", len(patients), "=" * 20)
@@ -33,7 +33,7 @@ def delete_patient(name):
     
     if not matches :
         print("\n|I couldn't find it|\n")
-
+        return
     for patient in matches:
         patients.remove(patient)
         
