@@ -1,4 +1,4 @@
-from patients import add_patient, list_patients, search_patient, delete_patient
+from patients import add_patient, list_patient, search_patient, delete_patient,save_patient,load_patient
 
 
 def check_name(prompt):
@@ -24,7 +24,7 @@ def add():
 
     diagnosis = check_name("Enter diagnosis: ")
     add_patient(name, age, diagnosis)
-
+    save_patient()
 
 def search():
     name = check_name("Enter name: ")
@@ -34,13 +34,14 @@ def search():
 def delete():
     name = check_name("Enter name to delete: ")
     delete_patient(name)
-
+    save_patient()
+load_patient()
 
 options = {
     "1": ("Add", add),
     "2": ("Search", search),
     "3": ("Delete", delete),
-    "4": ("List", list_patients),
+    "4": ("List", list_patient),
 }
 
 while True:
@@ -56,6 +57,7 @@ while True:
 
     else:
         if choice == "5":
+            save_patient()
             print("Bye")
             break
 

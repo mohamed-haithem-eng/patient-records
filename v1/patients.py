@@ -1,10 +1,11 @@
+import json
 patients = []
 
 def add_patient(name, age, diagnosis):
     patient = {"name": name, "age": age, "diagnosis": diagnosis}
     patients.append(patient)
     
-def list_patients():
+def list_patient():
     print("\n", "=" * 20, " patients list:", len(patients), "=" * 20)
     for num, patient in enumerate(patients, start=1):
         print(f"{num}.  name: {patient['name']}")
@@ -38,3 +39,21 @@ def delete_patient(name):
         patients.remove(patient)
         
     print(f"Deleted patient: {name}")
+
+file_name = "patients.json"
+
+def load_patient():
+    try:
+        with open(file_name,"r",encoding="utf-8") as f:
+            content= f.read().strip()
+            if content:
+                patients.extend(json.loads(content))
+    except FileNotFoundError:
+        pass
+    except json.JSONDecodeError:
+        print("patients.json is corrupted. Fix or delete it, then run again.")
+        raise SystemExit
+
+def save_patient():
+    with open(file_name,"w",encoding="utf-8") as f:
+        json.dump(patients,f,ensure_ascii=False,indent=4)
