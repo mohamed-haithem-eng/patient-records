@@ -14,7 +14,7 @@ class Patient:
             "diagnosis" : self.diagnosis }
     
     @classmethod
-    def from_dict(cls,data:dict): # convert dict to obj,cls mean class like and data mean dict
+    def from_dict(cls,data:dict): # cls = the class itself (Patient); builds a new object from a dict
         return cls(
             name=data["name"],
             age=data["age"],
