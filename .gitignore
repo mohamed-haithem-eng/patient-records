@@ -1,4 +1,21 @@
+# Python cache (any folder, any depth: v1, v2, v3, ...)
 __pycache__/
-*.pyc
+**/__pycache__/
+*.py[cod]
+
+# Test / tooling caches
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor settings
 .vscode/
+.idea/
+
+# Local runtime data (fake or not, never commit it)
 patients.json
+.DS_Store
