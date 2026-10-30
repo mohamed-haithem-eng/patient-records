@@ -1,82 +1,75 @@
-# Patient Records Management System
+# Patient Records
 
-A command-line Python project to manage patient medical records,
-built as part of a learning path covering Python, OOP, Testing,
-and Data Analysis with real-world (fake) medical data.
+A command-line patient records manager in Python, built in stages to practice
+core programming skills on a realistic, medical-flavoured problem.
 
-> ⚠️ **Disclaimer:** This project uses fully fake/dummy data only.
-> No real patient data is used or stored at any stage.
+> **Data disclaimer:** every record in this project is fake. No real patient
+> data is used, stored, or should ever be added.
 
-## Project Status
+## Status
 
-Currently in **Stage 1 (CLI)** — see roadmap below.
-
-## Overview
-
-The project is being built in 3 stages, each one adding a new layer
-on top of the previous without throwing away earlier work:
-
-| Stage | Focus | Output |
+| Stage | Focus | State |
 |---|---|---|
-| 1 — CLI | Functions, dictionaries, basic I/O | Terminal app: add / search / delete / list patients, saved to JSON |
-| 2 — OOP + Testing | Classes, inheritance, pytest | Same project rewritten with `Patient`, `Doctor`, `PatientRegistry` classes, with a working test suite |
-| 3 — Data Analysis | pandas, matplotlib | Analysis of 50 fake patients: filtering, grouping, missing data, charts |
+| 1. CLI (`v1/`) | Functions, dicts, input validation, JSON persistence | Done |
+| 2. OOP + tests (`v2/`) | `Patient` class, registry, inheritance, `pytest` | In progress |
+| 3. Data analysis | `pandas` + `matplotlib` on 50 generated fake patients | Planned |
 
-## Current Features (Stage 1)
+## What works today
 
-- Add a patient (name, age, diagnosis) with input validation
-- Search for a patient by name
-- Delete a patient by name
-- List all patients
-- Simple terminal menu (`while` loop)
+**v1 (terminal app)**
+- Add, search, delete and list patients through a menu loop
+- Input validation: non-empty names, age must be an integer from 1 to 120
+- Patients are saved to `patients.json` and reloaded on start
+- A missing or empty data file is handled; a corrupted one exits with a clear message
 
-## Planned Features
+**v2 (rewrite with classes, in progress)**
+- `Patient` class with `__init__` and `__str__`
+- `to_dict()` / `from_dict()` for converting between objects and JSON-ready dicts
 
-- Save / load patients to and from `patients.json` (Stage 1, in progress)
-- `Patient` class with `__init__` and `__str__` (Stage 2)
-- `PatientRegistry` class to manage all patients (Stage 2)
-- `Person` → `Patient` / `Doctor` inheritance (Stage 2)
-- Unit tests with `pytest` (Stage 2)
-- Data analysis notebook/script on 50 fake patients with pandas (Stage 3)
-- Charts with matplotlib (Stage 3)
+## Run
 
-## Project Structure
-
-```
-records-patient/
-├── README.md
-└── v1/
-    ├── cli.py         # Menu, user input, validation
-    └── patients.py    # Core logic: add, search, delete, list
-```
-
-> Structure will change in Stage 2 when the project moves to classes
-> (a new `v2/` folder, or restructured as the project grows).
-
-## How to Run
+Requires Python 3.10+ and no external packages.
 
 ```bash
-cd v1
+git clone https://github.com/mohamed-haithem-eng/patient-records.git
+cd patient-records/v1
 python cli.py
 ```
 
-## How to Run Tests
+`patients.json` is created in the directory you run the program from. It is
+git-ignored on purpose, so local data never gets committed.
 
-> Not available yet — tests are planned for Stage 2.
-> This section will be updated once `pytest` is added.
+## Tests
 
-## Tech Stack
+Not added yet. `pytest` tests for `Patient` and the registry are planned for Stage 2;
+this section will be updated with the exact command when they land.
 
-| Tool | Purpose |
-|---|---|
-| Python 3 | Core language |
-| JSON | Data persistence |
-| pytest | Testing (Stage 2) |
-| pandas | Data analysis (Stage 3) |
-| matplotlib | Visualization (Stage 3) |
+## Project layout
 
-## Author
+```
+patient-records/
+├── v1/
+│   ├── cli.py        # menu, user input, validation
+│   └── patients.py   # add / search / delete / list, JSON save and load
+├── v2/
+│   └── patients.py   # Patient class (registry and tests coming)
+└── README.md
+```
 
-Mohamed — learning project, Month 1 of a self-paced path toward
-Python, Math, Machine Learning and Deep Learning with a focus on
-medical data.
+`v1` is kept as-is so the progression from functions to classes stays visible
+in the history.
+
+## Roadmap
+
+- [x] CLI with menu and validation
+- [x] JSON persistence
+- [x] `Patient` class with `to_dict` / `from_dict`
+- [ ] `PatientRegistry` (add, find, remove, all) and a menu that uses it
+- [ ] `Person` base class, `Patient` and `Doctor` subclasses
+- [ ] `pytest` suite, including edge cases (empty list, duplicates, negative age)
+- [ ] Generated `patients.csv` and a `pandas` analysis with charts
+
+## About
+
+A learning project by Mohamed, part of a self-paced path through Python, maths,
+Machine Learning and Deep Learning, with a focus on medical data.
