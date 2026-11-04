@@ -12,7 +12,7 @@ class Patient:
         convert obj to dict
         when you write: Patient.to_dict()
         it will return {
-            "name":Patient.name, "age":Patient.age, "diagnosis":Patient.diagnosis}
+        "name":Patient.name, "age":Patient.age, "diagnosis":Patient.diagnosis}
         """
 
         return {
@@ -42,12 +42,6 @@ class PatientRegistry:
     def add(self, patient):
         data = patient.to_dict()
 
-        """ ----- key check ----- """
-        keys = ["name","age","diagnosis"]
-        for key in keys:
-            if key not in data:
-                return False
-
         """ ----- type check ----- """
         if (
             not isinstance(data["name"],str) or
@@ -57,9 +51,7 @@ class PatientRegistry:
         
         """ ----- storage chesck ----- """
         for p in self._patients:
-            if (
-                p["name"],p["age"],p["diagnosis"] == 
-                data["name"],data["age"],data["diagnosis"]):
+            if (p["name"],p["age"],p["diagnosis"]) == (data["name"],data["age"],data["diagnosis"]):
                 return False
 
         """ create id  and append to list """
@@ -69,10 +61,33 @@ class PatientRegistry:
         return True
     
     def show(self):
+        if not self._patients:
+            print("list is empty")
+            return False
+        for p in self._patients:
+            id = p["id"]
+            name=p["name"]
+            age=p["age"]
+            diagnosis = p["diagnosis"]
+            print("="*30)
+            print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")
+        print("="*30)  
+
+    def find(self):
+        ...
+    
+    def remove(self):
         ...
 
     def save(self):
         ...
     
-    def remove(self):
-        ...
+    
+p1 = Patient("mohamed",15,"E")
+p2 = Patient("gana",35,"x")
+
+reg = PatientRegistry()
+reg.add(p1)
+reg.add(p2)
+reg.show()
+
