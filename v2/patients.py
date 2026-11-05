@@ -52,6 +52,7 @@ class PatientRegistry:
         """ ----- storage chesck ----- """
         for p in self._patients:
             if (p["name"],p["age"],p["diagnosis"]) == (data["name"],data["age"],data["diagnosis"]):
+                print("\nyou've repeated this patient\nI'll take first one or in the memory")
                 return False
 
         """ create id  and append to list """
@@ -73,9 +74,28 @@ class PatientRegistry:
             print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")
         print("="*30)  
 
-    def find(self):
-        ...
-    
+    def find(self,id:int):
+        """
+        loop in self._patient
+        if id in list ,init variables then print
+        else exit with warning message """
+        
+        for p in self._patients:
+            if id == p["id"]:
+                id = p["id"]
+                name=p["name"]
+                age=p["age"]
+                diagnosis = p["diagnosis"]
+
+                print("="*30)
+                print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")       
+                return p
+        
+        print("="*30)
+        print(f"   | id {id} I don't find it |")
+        print("="*30)
+        return False
+
     def remove(self):
         ...
 
@@ -89,5 +109,5 @@ p2 = Patient("gana",35,"x")
 reg = PatientRegistry()
 reg.add(p1)
 reg.add(p2)
-reg.show()
-
+reg.find(1)
+reg.find(5)
