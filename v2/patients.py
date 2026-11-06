@@ -63,16 +63,17 @@ class PatientRegistry:
     
     def show(self):
         if not self._patients:
-            print("list is empty")
+            print("\nlist is empty")
             return False
+        print("\n","="*10," Patients List ","="*10,sep="")
         for p in self._patients:
             id = p["id"]
             name=p["name"]
             age=p["age"]
             diagnosis = p["diagnosis"]
-            print("="*30)
+            print("="*10)
             print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")
-        print("="*30)  
+        print("="*35)  
 
     def find(self,id:int):
         """
@@ -87,21 +88,28 @@ class PatientRegistry:
                 age=p["age"]
                 diagnosis = p["diagnosis"]
 
-                print("="*30)
+                print("\n","="*12," Find it ","="*14,sep="")
                 print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")       
                 return p
         
-        print("="*30)
-        print(f"   | id {id} I don't find it |")
-        print("="*30)
+        print("="*35)
+        print(f"\nID {id} is not found,I cant search it\n")
+        print("="*35)
         return False
 
-    def remove(self):
-        ...
+    def remove(self,id):
+        for p in self._patients:
+            if id == p["id"]:
+                self._patients.remove(p)
+                return True
+        print(f"\nID {id} is not found,I cant remove it")
+        return False
 
     def save(self):
         ...
-    
+
+    def load(self):
+        ...    
     
 p1 = Patient("mohamed",15,"E")
 p2 = Patient("gana",35,"x")
@@ -109,5 +117,3 @@ p2 = Patient("gana",35,"x")
 reg = PatientRegistry()
 reg.add(p1)
 reg.add(p2)
-reg.find(1)
-reg.find(5)
