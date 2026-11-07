@@ -1,3 +1,4 @@
+import json
 class Patient:
     def __init__(self,name:str,age:int,diagnosis:str):
         self.name = name
@@ -106,10 +107,24 @@ class PatientRegistry:
         return False
 
     def save(self):
-        ...
+        if self._patients:
+            with open("patients.json","w",encoding="utf-8") as file:
+                json.dump(self._patients,file,ensure_ascii=False,indent=4)
+        else:
+            print("\nlist empty,u can use add")
+            return False
 
     def load(self):
-        ...    
+        try:
+            with open("patients.json","r",encoding="utf-8") as file:
+                content = file.read().strip()
+                if content:
+                    self._patients.extend(json.loads(content))
+        except FileNotFoundError:
+            pass
+        except json.JSONDecodeError:
+            print("patients.json is corrupted. Fix or delete it, then run again.")
+            raise SystemExit
     
 p1 = Patient("mohamed",15,"E")
 p2 = Patient("gana",35,"x")
@@ -117,3 +132,4 @@ p2 = Patient("gana",35,"x")
 reg = PatientRegistry()
 reg.add(p1)
 reg.add(p2)
+reg.save()
