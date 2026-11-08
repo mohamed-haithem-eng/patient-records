@@ -50,7 +50,7 @@ class PatientRegistry:
             not isinstance(data["diagnosis"],str)):
             return False
         
-        """ ----- storage chesck ----- """
+        """ ----- storage check ----- """
         for p in self._patients:
             if (p["name"],p["age"],p["diagnosis"]) == (data["name"],data["age"],data["diagnosis"]):
                 return False
@@ -129,6 +129,7 @@ p2 = Patient("gana",35,"x")
 
 if __name__ == "__main__":
     reg = PatientRegistry()
+    reg.load()
     reg.add(p1)
     reg.add(p2)
     reg.save()
