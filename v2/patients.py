@@ -53,7 +53,6 @@ class PatientRegistry:
         """ ----- storage chesck ----- """
         for p in self._patients:
             if (p["name"],p["age"],p["diagnosis"]) == (data["name"],data["age"],data["diagnosis"]):
-                print("\nyou've repeated this patient\nI'll take first one or in the memory")
                 return False
 
         """ create id  and append to list """
@@ -64,8 +63,8 @@ class PatientRegistry:
     
     def show(self):
         if not self._patients:
-            print("\nlist is empty")
             return False
+
         print("\n","="*10," Patients List ","="*10,sep="")
         for p in self._patients:
             id = p["id"]
@@ -93,9 +92,6 @@ class PatientRegistry:
                 print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")       
                 return p
         
-        print("="*35)
-        print(f"\nID {id} is not found,I cant search it\n")
-        print("="*35)
         return False
 
     def remove(self,id):
@@ -103,33 +99,38 @@ class PatientRegistry:
             if id == p["id"]:
                 self._patients.remove(p)
                 return True
-        print(f"\nID {id} is not found,I cant remove it")
         return False
 
     def save(self):
-        if self._patients:
-            with open("patients.json","w",encoding="utf-8") as file:
-                json.dump(self._patients,file,ensure_ascii=False,indent=4)
-        else:
-            print("\nlist empty,u can use add")
-            return False
-
+        with open("patients.json","w",encoding="utf-8") as file:
+            json.dump(self._patients,file,ensure_ascii=False,indent=4)
+        return True
+       
     def load(self):
         try:
             with open("patients.json","r",encoding="utf-8") as file:
                 content = file.read().strip()
-                if content:
-                    self._patients.extend(json.loads(content))
+
         except FileNotFoundError:
-            pass
+            return True
+
+        if not content:
+            return True
+        try:
+            data = json.loads(content)
         except json.JSONDecodeError:
-            print("patients.json is corrupted. Fix or delete it, then run again.")
-            raise SystemExit
-    
+            return False
+        self._patients = data
+        self._id = max((p["id"] for p in data), default=0) + 1
+        return True
+       
 p1 = Patient("mohamed",15,"E")
 p2 = Patient("gana",35,"x")
 
-reg = PatientRegistry()
-reg.add(p1)
-reg.add(p2)
-reg.save()
+if __name__ == "__main__":
+    reg = PatientRegistry()
+    reg.add(p1)
+    reg.add(p2)
+    reg.save()
+    reg.load()
+    reg.show()
