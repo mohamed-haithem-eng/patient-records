@@ -129,7 +129,9 @@ p2 = Patient("gana",35,"x")
 
 if __name__ == "__main__":
     reg = PatientRegistry()
-    reg.load()
+    if not reg.load():
+        print("patients.json is corrupted. Fix or delete it, then run again.")
+        raise SystemExit
     reg.add(p1)
     reg.add(p2)
     reg.save()
