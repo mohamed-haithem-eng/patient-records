@@ -37,28 +37,24 @@ class Patient:
 class PatientRegistry:
 
     def __init__(self):
-        self._patients = []      
+        self._patients = {}    
         self._id = 1
 
     def add(self, patient):
-        data = patient.to_dict()
 
-        """ ----- type check ----- """
-        if (
-            not isinstance(data["name"],str) or
-            not isinstance(data["age"],int) or
-            not isinstance(data["diagnosis"],str)):
+        if (not isinstance(patient.name, str) or
+            not isinstance(patient.age, int) or
+            not isinstance(patient.diagnosis, str)):
             return False
         
-        """ ----- storage check ----- """
-        for p in self._patients:
-            if (p["name"],p["age"],p["diagnosis"]) == (data["name"],data["age"],data["diagnosis"]):
+        """ ----- duplicate check ----- """
+        for p in self._patients.values():
+            if p.to_dict() == patient.to_dict():
                 return False
 
-        """ create id  and append to list """
-        data["id"] = self._id    # ex patient.id = 1
-        self._id += 1            # ex self._patient = 2
-        self._patients.append(data)
+        """ ----- create id ----- """
+        self._patients[self._id] = patient
+        self._id+=1
         return True
     
     def show(self):
@@ -66,45 +62,29 @@ class PatientRegistry:
             return False
 
         print("\n","="*10," Patients List ","="*10,sep="")
-        for p in self._patients:
-            id = p["id"]
-            name=p["name"]
-            age=p["age"]
-            diagnosis = p["diagnosis"]
+        for id,p in self._patients.items():
             print("="*10)
-            print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")
+            print(f"id: {id}\nname: {p.name}\nage: {p.age}\ndiagnosis: {p.diagnosis}")
         print("="*35)  
 
     def find(self,id:int):
-        """
-        loop in self._patient
-        if id in list ,init variables then print
-        else exit with warning message """
-        
-        for p in self._patients:
-            if id == p["id"]:
-                id = p["id"]
-                name=p["name"]
-                age=p["age"]
-                diagnosis = p["diagnosis"]
+        return self._patients.get(id, False)
 
-                print("\n","="*12," Find it ","="*14,sep="")
-                print(f"id: {id}\nname: {name}\nage: {age}\ndiagnosis: {diagnosis}")       
-                return p
-        
-        return False
-
-    def remove(self,id):
-        for p in self._patients:
-            if id == p["id"]:
-                self._patients.remove(p)
-                return True
+    def remove(self, id):
+        if id in self._patients:
+            del self._patients[id]
+            return True
         return False
 
     def save(self):
-        with open("patients.json","w",encoding="utf-8") as file:
-            json.dump(self._patients,file,ensure_ascii=False,indent=4)
-        return True
+        data = []
+        for id,p in self._patients.items():
+            d = p.to_dict()
+            d["id"] = id
+            data.append(d)
+        with open("patients.json", "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+        return True     
        
     def load(self):
         try:
@@ -120,8 +100,10 @@ class PatientRegistry:
             data = json.loads(content)
         except json.JSONDecodeError:
             return False
-        self._patients = data
-        self._id = max((p["id"] for p in data), default=0) + 1
+        self._patients = {}
+        for d in data:
+            self._patients[d["id"]] = Patient.from_dict(d)
+        self._id = max(self._patients, default=0) + 1
         return True
        
 p1 = Patient("mohamed",15,"E")
